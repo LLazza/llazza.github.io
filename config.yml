@@ -23,13 +23,10 @@ menu:
           weight: 3
         - name: Data
           url: data/
-          weight: 4 
-        - name: Blog
-          url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
-          weight: 6
+          weight: 4
 
 params:
-    description: "This website hosts Moritz-Maria von Igelfeld's research papers, books, course materials, data, curriculum vitae, and contact information."
+    description: "This is the personal website of Luca Lazzaro."
     author: Luca Lazzaro
     # googleAnalyticsID: "G-XXXXX"
     DateFormat: "January 2006"
