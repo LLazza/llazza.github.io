@@ -1,4 +1,5 @@
-# Hugo build artifacts
-public/
-resources/
-.hugo_build.lock
+# Files that stay on this computer and are never published
+.claude/
+.DS_Store
+~$*
+network.html

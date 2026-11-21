@@ -1,0 +1,5 @@
+# Search engines may read everything on this site.
+User-agent: *
+Allow: /
+
+Sitemap: https://llazza.github.io/sitemap.xml
