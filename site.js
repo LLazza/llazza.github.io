@@ -17,6 +17,9 @@ const SHAPES = {
   arch:     '<path d="M14,96 L14,46 A36,36 0 0 1 86,46 L86,96 Z"/>',
 };
 
+// Where the ✕ sits inside each shape on the close button (its visual centre)
+const X_CENTRE = { triangle: [50, 62], quarter: [36, 62], half: [50, 54], arch: [50, 64], pentagon: [50, 56] };
+
 const SIZE_RATIO = 0.11;  // shape size relative to the screen (0.11 ≈ 110 px on a laptop)
 const SHADOWS = false;  // set to true to bring back the shadows under the shapes
 
@@ -52,6 +55,8 @@ const items = PAGES.map((page, i) => {
     ${SHADOWS ? '<span class="shadows"><span class="ambient"></span><span class="contact"></span></span>' : ''}
     <span class="drop"><svg class="shape" viewBox="0 0 100 100" aria-hidden="true">${SHAPES[pool[i]]}</svg></span>
     <span class="label">${page.label}</span>`;
+  page.shape = pool[i];
+  page.tilt = tilt;
   a.addEventListener('click', e => { e.preventDefault(); openPanel(page.id); });
   stage.appendChild(a);
 
@@ -251,7 +256,20 @@ const PAGES_HTML = {
 document.getElementById('panel-content').innerHTML = Object.keys(PAGES_HTML)
   .map(id => `<section class="page" id="page-${id}" hidden>${PAGES_HTML[id]()}</section>`).join('');
 
+// The close button borrows the shape (and tilt) of the section being read
+function setCloseShape(id) {
+  const page = PAGES.find(p => p.id === id);
+  if (!page) return;
+  const [cx, cy] = X_CENTRE[page.shape] || [50, 50], r = 13;
+  document.getElementById('close-shape').innerHTML = `
+    <svg viewBox="0 0 100 100">
+      <g class="outline" transform="rotate(${page.tilt.toFixed(1)} 50 50)">${SHAPES[page.shape]}</g>
+      <path class="x" d="M${cx - r},${cy - r} L${cx + r},${cy + r} M${cx + r},${cy - r} L${cx - r},${cy + r}"/>
+    </svg>`;
+}
+
 function openPanel(id) {
+  setCloseShape(id);
   document.querySelectorAll('#panel-content .page').forEach(sec => { sec.hidden = sec.id !== 'page-' + id; });
   panel.classList.add('open');
   document.body.classList.add('inside');
